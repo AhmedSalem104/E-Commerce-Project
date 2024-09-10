@@ -26,9 +26,6 @@ export class WishListComponent implements OnInit, OnDestroy {
   private readonly _ToastrService = inject(ToastrService)
   private readonly _CartService = inject(CartService)
 
-
-
-
   ngOnInit(): void {
     this.getLoggedUserWishlist()
   }
@@ -40,18 +37,14 @@ export class WishListComponent implements OnInit, OnDestroy {
       },
     })
   }
-
-
   RemoveFromWishList(Id: string) {
     this._WishlistService.RemoveProductFromWishlist(Id).subscribe({
       next: res => {
          localStorage.setItem('ProdcuctIdsWishListArr',JSON.stringify(res.data))
-         this._WishlistService.wishListCount.set(res.count)
         this.getLoggedUserWishlist()
       }
     })
   }
-
   addToCart(Product_Id: string) {
     //  here
     this._CartService.addProductToCart(Product_Id).subscribe({
@@ -70,6 +63,4 @@ export class WishListComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.StopApi.unsubscribe()
   }
-
-
 }

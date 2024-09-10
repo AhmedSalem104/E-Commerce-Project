@@ -120,7 +120,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   searchText: string = ''
 
   WishListArr!: any[]
-  x!: any[] 
+  x!: any[]
 
   private readonly Id: object = inject(PLATFORM_ID)
   private readonly _ProductsService = inject(ProductsService)
@@ -132,13 +132,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   private readonly _WishlistService = inject(WishlistService)
 
   ngOnInit(): void {
-    this.WishListArr = JSON.parse(localStorage.getItem('ProdcuctIdsWishListArr')!)
     this.CategoryloadingClass = "flex"
     this.BrandloadingClass = "flex"
     this.ProductloadingClass = "flex"
     this.GetAllBrands()
     this.getAllGategories()
     this.getAllProducts()
+    this.GetLoggedUserWishlist()
     if (isPlatformBrowser(this.Id)) {
       localStorage.setItem('CurrentPage', '/Products')
     }
@@ -149,9 +149,25 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.ProductloadingClass = 'hidden';
         this.ProductsList.set(res.data);
         this.totalPages = res.metadata.numberOfPages
-        this.WishListArr = JSON.parse(localStorage.getItem('ProdcuctIdsWishListArr')!) || [];
       },
     });
+  }
+  GetLoggedUserWishlist() {
+    this.WishListArr = JSON.parse(localStorage.getItem('ProdcuctIdsWishListArr')!)
+    this._WishlistService.GetLoggedUserWishlist().subscribe({
+      next: res => {
+        if (res.data.length == 0) {
+          localStorage.setItem('ProdcuctIdsWishListArr', JSON.stringify(res.data))
+        }
+        else {
+          this.WishListArr = JSON.parse(localStorage.getItem('ProdcuctIdsWishListArr')!)
+          console.log(this.WishListArr);
+          for (let i = 0; res.data.length; i++) {
+            this.WishListArr.push(res.data[i]._id)
+          }
+        }
+      },
+    })
   }
   getIconClass(productId: string): string {
     this.WishListArr = JSON.parse(localStorage.getItem('ProdcuctIdsWishListArr')!)
@@ -232,7 +248,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
   changePage(currentPage: number) {
     this._ProductsService.getAllProductsPagination(currentPage).subscribe({
-      next:(res)=>{
+      next: (res) => {
         this.ProductsList.set(res.data)
       }
     })

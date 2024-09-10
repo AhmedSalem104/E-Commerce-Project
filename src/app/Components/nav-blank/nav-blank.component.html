@@ -96,6 +96,7 @@
                 </span>
             </div>
 
+
             <button (click)="toggleMenu()" class="text-gray-900 hover:text-blue-600">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
@@ -121,12 +122,24 @@
             </a>
             <hr class="my-2 border-t-2 border-gray-300">
             <div class="flex justify-around rtl:space-x-reverse ltr:space-x-4">
-                <a routerLink="wishList" routerLinkActive="link-style-Icon" class="text-2xl">
-                    <i class="fa-solid fa-heart"></i>
-                </a>
-                <a routerLink="cart" routerLinkActive="link-style-Icon" class="text-2xl">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                </a>
+                <div class="relative">
+                    <a routerLink="wishList" routerLinkActive="link-style-Icon" class="text-2xl">
+                        <i class="fa-solid fa-heart"></i>
+                    </a>
+                    <span class="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                        {{ wishListItemCount() }}
+                    </span>
+                </div>
+    
+                <!-- Cart Icon -->
+              <!--   <div class="relative">
+                    <a routerLink="cart" routerLinkActive="link-style-Icon" class="text-2xl">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                    </a>
+                    <span class="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                        {{ cartItemCount() }}
+                    </span>
+                </div> -->
                 <a class="text-xl  hover:text-red-600">
                     <i class="fa-brands fa-instagram"></i>
                 </a>
