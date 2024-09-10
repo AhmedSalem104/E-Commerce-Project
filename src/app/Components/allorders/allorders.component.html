@@ -1,0 +1,82 @@
+@if(OrderData){
+
+  <div class="container mx-auto p-6">
+    <h2 class="text-4xl font-bold mb-8 text-center main-color">Orders</h2>
+
+    <!-- Add responsive grid layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-1 gap-6">
+      @for(order of OrderData ; track $index){
+      <div class="bg-gray-200 shadow-md rounded-lg p-6">
+        <div class="border-b border-gray-300 pb-4 mb-4">
+          <h3 class="text-2xl font-bold mb-2">Order</h3>
+          <p class="text-gray-600">Date Created: {{ order.createdAt | date:'short' }}</p>
+          <p class="text-gray-600">Total Price: {{ order.totalOrderPrice | currency:'EGP' }}</p>
+          <p class="text-gray-600">Payment Method: {{ order.paymentMethodType }}</p>
+          <p class="text-gray-600">Paid: {{ order.isPaid ? 'Yes' : 'No' }}</p>
+          <p class="text-gray-600">Delivered: {{ order.isDelivered ? 'Yes' : 'No' }}</p>
+        </div>
+
+        <div class="mb-4">
+          <h4 class="text-xl font-semibold mb-2">User Information</h4>
+          <p class="text-gray-600">Name: {{ order.user.name }}</p>
+          <p class="text-gray-600">Email: {{ order.user.email }}</p>
+          <p class="text-gray-600">Phone: {{ order.user.phone }}</p>
+        </div>
+
+        <div class="mb-4">
+          <h4 class="text-xl font-semibold mb-2">Shipping Address</h4>
+          <p class="text-gray-600">Details: {{ order.shippingAddress.details }}</p>
+          <p class="text-gray-600">Phone: {{ order.shippingAddress.phone }}</p>
+          <p class="text-gray-600">City: {{ order.shippingAddress.city }}</p>
+        </div>
+
+        <div>
+          <h4 class="text-xl font-semibold mb-2">Cart Items  <span class="main-color"> {{order.cartItems.length}}</span> </h4>
+          
+          <!-- Cart Items Accordion -->
+          @for(item of order.cartItems ; track $index){
+          <div class="border rounded-lg mb-4 bg-gray-50 shadow-sm">
+            <button class="w-full flex justify-between items-center px-4 py-2 bg-gray-100 text-left" (click)="toggleAccordion(item._id)">
+              <span class="font-semibold">Item {{ $index + 1 }}</span>
+              <span class="text-gray-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </span>
+            </button>
+
+            <!-- Accordion Content (details) -->
+            @if(isOpen(item._id)){
+              <div class="p-4">
+                <div class="flex items-center space-x-4">
+                  @if(item.product){
+                  <img class="w-24 h-24 object-cover rounded-lg" [src]="item.product?.imageCover" alt="Product Image">
+                  <div class="flex-1">
+                    <h5 class="text-lg font-semibold mb-1"><span class="main-color">Title :</span> {{
+                      item.product?.title.split(' ').splice(0,2).join(' ') }}</h5>
+                    <p class="text-gray-600"><span class="main-color">Price :</span> {{ item.price | currency:'EGP' }}</p>
+                    <p class="text-gray-600"><span class="main-color">Quantity :</span> {{ item.count }}</p>
+                  </div>
+                  }
+                  @else{
+                  <div>
+                    <p class="text-gray-600">Product details not available</p>
+                  </div>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+          }
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+
+  
+}
+
+
+
+

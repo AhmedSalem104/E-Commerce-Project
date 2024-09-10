@@ -1,0 +1,174 @@
+<!-- app.component.html -->
+<nav class="fixed w-full top-0 z-10 bg-gray-100 text-gray-900 shadow-lg p-4 rtl:text-right ltr:text-left">
+    <div class="container mx-auto flex justify-between items-center rtl:space-x-reverse ltr:space-x-4">
+        <!-- Logo -->
+        <div class="text-gray-900 font-bold text-xl">
+            <a routerLink="login">
+                <img class="h-8 w-auto" src="./assets/images/freshcart-logo.svg" alt="Your Company">
+            </a>
+        </div>
+
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex items-center space-x-4 rtl:space-x-reverse ltr:space-x-4">
+            <a class="py-2 text-lg" routerLink="home" routerLinkActive="link-style">
+                {{"navbar.Home" | translate}}
+            </a>
+            <a class="py-2 text-lg" routerLink="brands" routerLinkActive="link-style">
+                {{"navbar.Brands" | translate}}
+            </a>
+            <a class="py-2 text-lg" routerLink="categories" routerLinkActive="link-style">
+                {{"navbar.Categories" | translate}}
+            </a>
+            <a class="py-2 text-lg" routerLink="products" routerLinkActive="link-style">
+                {{"navbar.Products" | translate}}
+            </a>
+        </div>
+
+        <!-- Desktop Icons -->
+        <div class="hidden md:flex items-center space-x-4 rtl:space-x-reverse ltr:space-x-4">
+            <!-- Wishlist Icon -->
+            <div class="relative">
+                <a routerLink="wishList" routerLinkActive="link-style-Icon" class="text-2xl">
+                    <i class="fa-solid fa-heart"></i>
+                </a>
+                <span class="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                    {{ wishListItemCount() }}
+                </span>
+            </div>
+
+            <!-- Cart Icon -->
+            <div class="relative">
+                <a routerLink="cart" routerLinkActive="link-style-Icon" class="text-2xl">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                </a>
+                <span class="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                    {{ cartItemCount() }}
+                </span>
+            </div>
+
+            <!-- Social Icons -->
+            <a class="text-xl  hover:text-red-600">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+            <a class="text-xl hover:text-blue-600">
+                <i class="fa-brands fa-facebook"></i>
+            </a>
+            <a class="text-xl hover:text-blue-600">
+                <i class="fa-brands fa-tiktok"></i>
+            </a>
+            <a class="text-xl hover:text-blue-600">
+                <i class="fa-brands fa-twitter"></i>
+            </a>
+            <a class="text-xl hover:text-blue-600">
+                <i class="fa-brands fa-linkedin"></i>
+            </a>
+            <a class="text-xl hover:text-red-600">
+                <i class="fa-brands fa-youtube"></i>
+            </a>
+
+            <!-- Language Selector -->
+            <a [ngClass]="{'bg-gray-300': _TranslateService.currentLang == 'en'}" (click)="cahnge('en')"
+                class="block px-2 py-3 mx-1 text-sm font-semibold main-color hover:bg-gray-300 rounded-lg cursor-pointer">
+                En
+            </a>
+            <a [ngClass]="{'bg-gray-300': _TranslateService.currentLang == 'ar'}" (click)="cahnge('ar')"
+                class="block px-2 py-3 mx-1 text-sm font-semibold main-color hover:bg-gray-300 rounded-lg cursor-pointer">
+                Ar
+            </a>
+            <a  class="py-2 text-lg" routerLink="allorders" routerLinkActive="link-style"  >
+                {{"navbar.MyOrder" | translate}}
+            </a>
+            <!-- Sign Out -->
+            <a class="py-2 text-lg cursor-pointer" (click)="_AuthService.logOut()">
+                {{"navbar.SignOut" | translate}}
+            </a>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <div class="md:hidden flex items-center space-x-4 rtl:space-x-reverse ltr:space-x-4">
+            <!-- Cart Icon -->
+            <div class="relative">
+                <a routerLink="cart" routerLinkActive="link-style-Icon" class="text-2xl">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                </a>
+                <span class="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                    {{ cartItemCount() }}
+                </span>
+            </div>
+
+            <button (click)="toggleMenu()" class="text-gray-900 hover:text-blue-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Menu Links -->
+    <div #mobileMenu [ngClass]="{ 'hidden': isMenuHidden }" class="md:hidden rtl:text-right ltr:text-left">
+        <div class="px-4 py-2 space-y-2">
+            <a class="block py-2 text-lg" routerLink="home" routerLinkActive="link-style">
+                {{"navbar.Home" | translate}}
+            </a>
+            <a class="block py-2 text-lg" routerLink="brands" routerLinkActive="link-style">
+                {{"navbar.Brands" | translate}}
+            </a>
+            <a class="block py-2 text-lg" routerLink="categories" routerLinkActive="link-style">
+                {{"navbar.Categories" | translate}}
+            </a>
+            <a class="block py-2 text-lg" routerLink="products" routerLinkActive="link-style">
+                {{"navbar.Products" | translate}}
+            </a>
+            <hr class="my-2 border-t-2 border-gray-300">
+            <div class="flex justify-around rtl:space-x-reverse ltr:space-x-4">
+                <a routerLink="wishList" routerLinkActive="link-style-Icon" class="text-2xl">
+                    <i class="fa-solid fa-heart"></i>
+                </a>
+                <a routerLink="cart" routerLinkActive="link-style-Icon" class="text-2xl">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                </a>
+                <a class="text-xl  hover:text-red-600">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a class="text-xl hover:text-blue-600">
+                    <i class="fa-brands fa-facebook"></i>
+                </a>
+                <a class="text-xl hover:text-blue-600">
+                    <i class="fa-brands fa-tiktok"></i>
+                </a>
+                <a class="text-xl hover:text-blue-600">
+                    <i class="fa-brands fa-twitter"></i>
+                </a>
+                <a class="text-xl hover:text-blue-600">
+                    <i class="fa-brands fa-linkedin"></i>
+                </a>
+                <a class="text-xl hover:text-red-600">
+                    <i class="fa-brands fa-youtube"></i>
+                </a>
+            </div>
+            <hr class="my-2 border-t-2 border-gray-300">
+
+
+            <div class="flex items-center justify-between rtl:space-x-reverse ltr:space-x-4">
+                <div class="flex space-x-4 rtl:space-x-reverse ltr:space-x-4">
+                    <a [ngClass]="{'bg-gray-200': _TranslateService.currentLang == 'en'}" (click)="cahnge('en')"
+                        class="px-4 py-2 text-sm font-semibold main-color hover:bg-gray-200 rounded-lg cursor-pointer">
+                        En
+                    </a>
+                    <a [ngClass]="{'bg-gray-200': _TranslateService.currentLang == 'ar'}" (click)="cahnge('ar')"
+                        class="px-4 py-2 text-sm font-semibold main-color hover:bg-gray-200 rounded-lg cursor-pointer">
+                        Ar
+                    </a>
+                </div>
+                <a  class="py-2 text-lg" routerLink="allorders" routerLinkActive="link-style"  >
+                    {{"navbar.MyOrder" | translate}}
+                </a>
+                <a class="w-52 block py-2 text-lg text-center cursor-pointer font-semibold bg-gray-200 rounded-lg" (click)="_AuthService.logOut()">
+                    {{"navbar.SignOut" | translate}}
+                </a>
+            </div>
+            
+           
+        </div>
+    </div>
+</nav>
