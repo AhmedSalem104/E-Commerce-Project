@@ -153,23 +153,31 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
   }
   GetLoggedUserWishlist() {
+    localStorage.setItem('ProdcuctIdsWishListArr',JSON.stringify([]))
     this.WishListArr = JSON.parse(localStorage.getItem('ProdcuctIdsWishListArr')!)
     this._WishlistService.GetLoggedUserWishlist().subscribe({
       next: res => {
         if (res.data.length == 0) {
+          console.log("فاضية");
+          
           localStorage.setItem('ProdcuctIdsWishListArr', JSON.stringify(res.data))
         }
         else {
+          console.log("مش فاضية");
           this.WishListArr = JSON.parse(localStorage.getItem('ProdcuctIdsWishListArr')!)
           console.log(this.WishListArr);
           for (let i = 0; res.data.length; i++) {
             this.WishListArr.push(res.data[i]._id)
+            console.log(this.WishListArr);
+            
+            localStorage.setItem('ProdcuctIdsWishListArr',JSON.stringify(this.WishListArr))
           }
+         
         }
       },
     })
   }
-  getIconClass(productId: string): string {
+  getIconClass(productId: string): any {
     this.WishListArr = JSON.parse(localStorage.getItem('ProdcuctIdsWishListArr')!)
     return this.WishListArr.includes(productId) ? 'loveIconsolid' : 'loveIconregular';
   }
